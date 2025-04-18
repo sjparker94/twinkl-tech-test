@@ -25,12 +25,12 @@ These are the requirements for the system:
 
 ## What we are looking for
 
-* Submit something that we can run locally
-* Commiting changes with good messages as you go is very helpful
-* You can update the README or add a NOTES.md detailing any decisions/tradeoffs you made, or changes you would make with more time
-* Clean, secure, modular code written to your own standards of what good looks like. Add concise comments in the code if you want to explain a decision. 
-* Pragmatism. We are not looking for complex solutions, and there is no hidden trick requirement in our task ;) 
-* Feel free to install and use additional packages
+- Submit something that we can run locally
+- Commiting changes with good messages as you go is very helpful
+- You can update the README or add a NOTES.md detailing any decisions/tradeoffs you made, or changes you would make with more time
+- Clean, secure, modular code written to your own standards of what good looks like. Add concise comments in the code if you want to explain a decision.
+- Pragmatism. We are not looking for complex solutions, and there is no hidden trick requirement in our task ;)
+- Feel free to install and use additional packages
 
 ## Setup
 
@@ -73,7 +73,7 @@ In development the following command will start the server and use `nodemon` to 
 npm run dev
 ```
 
-The server will start at `http://localhost:3000` by default. You can change the port in `src/index.ts` 
+The server will start at `http://localhost:3000` by default. You can change the port in `src/index.ts`
 
 There are no tests in the project at the moment, but a command is available to run:
 
@@ -87,4 +87,3 @@ There are also commands to build and start a server without nodemon:
 npm run build
 npm start
 ```
-

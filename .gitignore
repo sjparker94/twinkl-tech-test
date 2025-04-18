@@ -8,7 +8,13 @@ dist/
 .env
 
 # Ignore log files
+logs/
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
 # Ignore editor-specific files
 .vscode/

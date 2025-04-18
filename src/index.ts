@@ -1,13 +1,19 @@
-import express, { Express, Request, Response } from 'express';
+import { serve } from '@hono/node-server';
+import { Hono } from 'hono';
 
-const app: Express = express();
-const port = process.env.PORT || 3000;
+const app = new Hono();
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+app.get('/', (c) => {
+    return c.text('Hello World!');
 });
 
-app.listen(port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`[server]: Server is running at http://localhost:${port}`);
-});
+serve(
+    {
+        fetch: app.fetch,
+        port: 3000,
+    },
+    (info) => {
+        // eslint-disable-next-line no-console
+        console.log(`Server is running on http://localhost:${info.port}`);
+    },
+);
