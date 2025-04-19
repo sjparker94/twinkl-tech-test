@@ -5,13 +5,24 @@ import { requestId } from 'hono/request-id';
 
 import type { AppBindings, AppOpenAPI } from '~/lib/types';
 
+import { HTTP_STATUS_VALUES } from '~/constants/http';
 import { notFound, onError } from '~/middlewares/error';
 import { pinoLogger } from '~/middlewares/logger';
 
 export function createRouter() {
     return new OpenAPIHono<AppBindings>({
         strict: false,
-        // defaultHook,
+        defaultHook: (result, c) => {
+            if (!result.success) {
+                return c.json(
+                    {
+                        success: result.success,
+                        error: result.error,
+                    },
+                    HTTP_STATUS_VALUES.UNPROCESSABLE_ENTITY.code,
+                );
+            }
+        },
     });
 }
 

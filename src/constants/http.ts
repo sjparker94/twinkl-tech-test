@@ -24,6 +24,11 @@ export const HTTP_STATUS_VALUES = {
         code: 403,
         message: 'Forbidden',
     },
+
+    UNPROCESSABLE_ENTITY: {
+        code: 422,
+        message: 'Unprocessable Entity',
+    },
     INTERNAL_SERVER_ERROR: {
         code: 500,
         message: 'Internal Server Error',
