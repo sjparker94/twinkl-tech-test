@@ -45,7 +45,9 @@ export const user = sqliteTable(
     },
 );
 
-export const selectUserSchema = createSelectSchema(user);
+export const selectUserSchema = createSelectSchema(user).omit({
+    password: true,
+});
 
 export const insertUserSchema = createInsertSchema(user, {
     firstName: (schema) => {
