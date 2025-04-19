@@ -1,19 +1,15 @@
 // import { env } from '~/env.js';
 import { serve } from '@hono/node-server';
-import { Hono } from 'hono';
 
+import { app } from '~/app';
 import { env } from '~/env';
 
-const app = new Hono();
-
-app.get('/', (c) => {
-    return c.text('Hello World!');
-});
+const port = env.PORT;
 
 serve(
     {
         fetch: app.fetch,
-        port: env.PORT,
+        port,
     },
     (info) => {
         // eslint-disable-next-line no-console
