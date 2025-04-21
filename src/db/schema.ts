@@ -81,12 +81,23 @@ export const insertUserSchema = createInsertSchema(user, {
     },
     email: (schema) => {
         return schema
-            .email('Please provide a valid email address')
             .trim()
             .toLowerCase()
+            .email('Please provide a valid email address')
             .openapi({ example: 'johndoe@example.com' });
     },
-    type: z.nativeEnum(USER_TYPES).openapi({ example: USER_TYPES.student }),
+    type: z
+        .nativeEnum(USER_TYPES, {
+            description: 'The type of user',
+            errorMap: () => ({
+                message: `Please provide a valid user type, Must be one of ${Object.values(
+                    USER_TYPES,
+                )
+                    .map((type) => `'${type}'`)
+                    .join(' | ')}`,
+            }),
+        })
+        .openapi({ example: USER_TYPES.student }),
     // Password schema but the password will be hashed before being stored
     // This is just for validation on the API endpoint
     password: (schema) => {
