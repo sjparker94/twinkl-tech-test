@@ -18,8 +18,9 @@ export function createRouter() {
                     {
                         success: result.success,
                         error: result.error,
+                        statusCode: HTTP_STATUS_VALUES.BAD_REQUEST.code,
                     },
-                    HTTP_STATUS_VALUES.UNPROCESSABLE_ENTITY.code,
+                    HTTP_STATUS_VALUES.BAD_REQUEST.code,
                 );
             }
         },
