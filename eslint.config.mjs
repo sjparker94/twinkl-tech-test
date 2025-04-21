@@ -35,6 +35,7 @@ export default antfu(
                     ignore: ['README.md'],
                 },
             ],
+            'style/operator-linebreak': 'off',
         },
     },
 );
