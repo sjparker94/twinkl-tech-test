@@ -36,6 +36,7 @@ export default antfu(
                 },
             ],
             'style/operator-linebreak': 'off',
+            'style/arrow-parens': 'off',
         },
     },
 );
