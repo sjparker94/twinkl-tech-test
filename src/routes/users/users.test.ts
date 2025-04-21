@@ -23,7 +23,7 @@ import { usersRouter } from './users.index';
 
 const client = testClient(createTestApp(usersRouter));
 
-describe('users', () => {
+describe('usersRouter', () => {
     beforeAll(async () => {
         // spin up the test database
         // this will create a test.db file in the root of the project if it doesn't exist
