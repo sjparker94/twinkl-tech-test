@@ -3,7 +3,7 @@ import { z } from 'zod';
 const envSchema = z.object({
     APP_NAME: z.string(),
     NODE_ENV: z.enum(['development', 'test', 'production']),
-    LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).optional(),
+    LOG_LEVEL: z.enum(['silent', 'debug', 'info', 'warn', 'error']).optional(),
     PORT: z.coerce.number().default(3000),
     DATABASE_URL: z.string().url(),
 });
