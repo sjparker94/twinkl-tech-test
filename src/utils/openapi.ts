@@ -18,6 +18,16 @@ export function jsonContent<T extends ZodSchema>(
     };
 }
 
+export function jsonContentRequired<T extends ZodSchema>(
+    schema: T,
+    description: string,
+) {
+    return {
+        ...jsonContent(schema, description),
+        required: true,
+    };
+}
+
 export function createMessageObjectSchema(
     exampleMessage: string = 'Hello World',
 ) {
@@ -28,6 +38,23 @@ export function createMessageObjectSchema(
         .openapi({
             example: {
                 message: exampleMessage,
+            },
+        });
+}
+
+export function createErrorMessageJsonObjectSchema(
+    exampleMessage: string = 'Hello World',
+    exampleStatusCode: number = 500,
+) {
+    return z
+        .object({
+            message: z.string(),
+            statusCode: z.number(),
+        })
+        .openapi({
+            example: {
+                message: exampleMessage,
+                statusCode: exampleStatusCode,
             },
         });
 }
@@ -54,5 +81,8 @@ export function createErrorSchema<T extends ZodSchema>(schema: T) {
             .openapi({
                 example: error,
             }),
+        statusCode: z.number().openapi({
+            example: 400,
+        }),
     });
 }
