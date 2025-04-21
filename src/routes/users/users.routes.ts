@@ -53,7 +53,7 @@ export const create = createRoute({
 const idParamsSchema = z.object({
     id: z
         .string()
-        .cuid2()
+        .cuid2('Invalid id provided')
         .openapi({
             param: {
                 name: 'id',
