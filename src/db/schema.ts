@@ -48,20 +48,40 @@ export const user = sqliteTable(
     },
 );
 
-export const selectUserSchema = createSelectSchema(user).omit({
-    password: true,
-});
+export const selectUserSchema = createSelectSchema(user)
+    .omit({
+        password: true,
+    })
+    .openapi('user', {
+        example: {
+            id: 'tz4a98xxat96iws9zmbrgj3a',
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'johndoe@example.com',
+            type: 'student',
+            createdAt: new Date('2023-10-01T00:00:00.000Z'),
+            updatedAt: new Date('2023-10-01T00:00:00.000Z'),
+        },
+    });
 
 export const insertUserSchema = createInsertSchema(user, {
     firstName: (schema) => {
-        return schema.min(1).max(500).trim().openapi({ example: 'John' });
+        return schema
+            .min(1, 'First name is a required field')
+            .max(500, 'First name can not be longer than 500 characters')
+            .trim()
+            .openapi({ example: 'John' });
     },
     lastName: (schema) => {
-        return schema.min(1).max(500).trim().openapi({ example: 'Doe' });
+        return schema
+            .min(1, 'Last name is a required field')
+            .max(500, 'Last name can not be longer than 500 characters')
+            .trim()
+            .openapi({ example: 'Doe' });
     },
     email: (schema) => {
         return schema
-            .email()
+            .email('Please provide a valid email address')
             .trim()
             .toLowerCase()
             .openapi({ example: 'johndoe@example.com' });
@@ -72,10 +92,13 @@ export const insertUserSchema = createInsertSchema(user, {
     password: (schema) => {
         return (
             schema
-                .min(8)
-                .max(64)
+                .min(8, 'The password must be at least 8 characters long')
+                .max(64, 'The password must be at most 64 characters long')
                 // At least one digit, one lowercase letter, and one uppercase letter
-                .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).+$/)
+                .regex(
+                    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).+$/,
+                    'The password must contain at least one digit, one lowercase letter, and one uppercase letter',
+                )
                 .openapi({
                     example: 'P@ssword123',
                 })

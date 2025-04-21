@@ -1,11 +1,11 @@
 import { createRoute, z } from '@hono/zod-openapi';
 
+import { apiEndpointStatuses } from '~/constants/api';
 import { HTTP_STATUS_VALUES } from '~/constants/http';
 import { insertUserSchema, selectUserSchema } from '~/db/schema';
 import {
     createErrorMessageJsonObjectSchema,
     createErrorSchema,
-    createMessageObjectSchema,
     jsonContent,
     jsonContentRequired,
 } from '~/utils/openapi';
@@ -21,7 +21,12 @@ export const create = createRoute({
     tags,
     responses: {
         [HTTP_STATUS_VALUES.CREATED.code]: jsonContent(
-            selectUserSchema,
+            z.object({
+                status: z.literal(apiEndpointStatuses.success).openapi({
+                    example: apiEndpointStatuses.success,
+                }),
+                data: selectUserSchema,
+            }),
             'The created task',
         ),
         [HTTP_STATUS_VALUES.BAD_REQUEST.code]: jsonContent(
@@ -68,11 +73,19 @@ export const getOne = createRoute({
     tags,
     responses: {
         [HTTP_STATUS_VALUES.OK.code]: jsonContent(
-            selectUserSchema,
+            z.object({
+                status: z.literal(apiEndpointStatuses.success).openapi({
+                    example: apiEndpointStatuses.success,
+                }),
+                data: selectUserSchema,
+            }),
             'The requested user',
         ),
         [HTTP_STATUS_VALUES.NOT_FOUND.code]: jsonContent(
-            createMessageObjectSchema(HTTP_STATUS_VALUES.NOT_FOUND.message),
+            createErrorMessageJsonObjectSchema(
+                HTTP_STATUS_VALUES.NOT_FOUND.message,
+                HTTP_STATUS_VALUES.NOT_FOUND.code,
+            ),
             'User not found',
         ),
         [HTTP_STATUS_VALUES.BAD_REQUEST.code]: jsonContent(
@@ -80,8 +93,9 @@ export const getOne = createRoute({
             'Invalid id error',
         ),
         [HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.code]: jsonContent(
-            createMessageObjectSchema(
+            createErrorMessageJsonObjectSchema(
                 HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.message,
+                HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.code,
             ),
             'Unexpected error',
         ),

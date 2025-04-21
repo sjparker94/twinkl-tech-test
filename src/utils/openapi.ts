@@ -1,5 +1,7 @@
 import { z } from '@hono/zod-openapi';
 
+import { apiEndpointStatuses } from '~/constants/api';
+
 export type ZodSchema =
     // @ts-expect-error zod union expects a generic
     z.ZodUnion | z.AnyZodObject | z.ZodArray<z.AnyZodObject>;
@@ -28,16 +30,22 @@ export function jsonContentRequired<T extends ZodSchema>(
     };
 }
 
-export function createMessageObjectSchema(
+export function createSuccessMessageObjectSchema(
     exampleMessage: string = 'Hello World',
 ) {
     return z
         .object({
-            message: z.string(),
+            status: z.literal(apiEndpointStatuses.success),
+            data: z.object({
+                message: z.string(),
+            }),
         })
         .openapi({
             example: {
-                message: exampleMessage,
+                status: apiEndpointStatuses.success,
+                data: {
+                    message: exampleMessage,
+                },
             },
         });
 }
@@ -48,13 +56,19 @@ export function createErrorMessageJsonObjectSchema(
 ) {
     return z
         .object({
-            message: z.string(),
-            statusCode: z.number(),
+            status: z.literal(apiEndpointStatuses.error),
+            error: z.object({
+                message: z.string(),
+                statusCode: z.number(),
+            }),
         })
         .openapi({
             example: {
-                message: exampleMessage,
-                statusCode: exampleStatusCode,
+                status: apiEndpointStatuses.error,
+                error: {
+                    message: exampleMessage,
+                    statusCode: exampleStatusCode,
+                },
             },
         });
 }
@@ -64,25 +78,27 @@ export function createErrorSchema<T extends ZodSchema>(schema: T) {
         schema._def.typeName === z.ZodFirstPartyTypeKind.ZodArray ? [] : {},
     );
     return z.object({
-        success: z.boolean().openapi({
-            example: false,
+        status: z.literal(apiEndpointStatuses.error).openapi({
+            example: apiEndpointStatuses.error,
         }),
-        error: z
-            .object({
-                issues: z.array(
-                    z.object({
-                        code: z.string(),
-                        path: z.array(z.union([z.string(), z.number()])),
-                        message: z.string().optional(),
-                    }),
-                ),
-                name: z.string(),
-            })
-            .openapi({
-                example: error,
+        error: z.object({
+            validationError: z
+                .object({
+                    issues: z.array(
+                        z.object({
+                            code: z.string(),
+                            path: z.array(z.union([z.string(), z.number()])),
+                            message: z.string().optional(),
+                        }),
+                    ),
+                    name: z.string(),
+                })
+                .openapi({
+                    example: error,
+                }),
+            statusCode: z.number().openapi({
+                example: 400,
             }),
-        statusCode: z.number().openapi({
-            example: 400,
         }),
     });
 }

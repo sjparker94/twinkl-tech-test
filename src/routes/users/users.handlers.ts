@@ -4,6 +4,7 @@ import omit from 'just-omit';
 
 import type { AppRouteHandler } from '~/lib/types';
 
+import { apiEndpointStatuses } from '~/constants/api';
 import { HTTP_STATUS_VALUES } from '~/constants/http';
 import { SALT_ROUNDS } from '~/constants/users';
 import { db } from '~/db';
@@ -26,8 +27,11 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
         );
         return c.json(
             {
-                message: HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.message,
-                statusCode: HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.code,
+                status: apiEndpointStatuses.error,
+                error: {
+                    message: HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.message,
+                    statusCode: HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.code,
+                },
             },
             HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.code,
         );
@@ -60,8 +64,11 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
         );
         return c.json(
             {
-                message: `${HTTP_STATUS_VALUES.CONFLICT.message}. The user could not be created. User with these details already exists`,
-                statusCode: HTTP_STATUS_VALUES.CONFLICT.code,
+                status: apiEndpointStatuses.error,
+                error: {
+                    message: `${HTTP_STATUS_VALUES.CONFLICT.message}. The user could not be created. User with these details already exists`,
+                    statusCode: HTTP_STATUS_VALUES.CONFLICT.code,
+                },
             },
             HTTP_STATUS_VALUES.CONFLICT.code,
         );
@@ -71,15 +78,24 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
         c.var.logger.error({ error }, 'create_user_db_error');
         return c.json(
             {
-                message: `${HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.message}`,
-                statusCode: HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.code,
+                status: apiEndpointStatuses.error,
+                error: {
+                    message: `${HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.message}`,
+                    statusCode: HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.code,
+                },
             },
             HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.code,
         );
     }
 
     const [inserted] = data;
-    return c.json(inserted, HTTP_STATUS_VALUES.CREATED.code);
+    return c.json(
+        {
+            status: apiEndpointStatuses.success,
+            data: inserted,
+        },
+        HTTP_STATUS_VALUES.CREATED.code,
+    );
 };
 
 export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
@@ -97,8 +113,11 @@ export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
         c.var.logger.error({ error }, 'get_user_db_error');
         return c.json(
             {
-                message: HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.message,
-                statusCode: HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.code,
+                status: apiEndpointStatuses.error,
+                error: {
+                    message: HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.message,
+                    statusCode: HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.code,
+                },
             },
             HTTP_STATUS_VALUES.INTERNAL_SERVER_ERROR.code,
         );
@@ -108,8 +127,11 @@ export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
         c.var.logger.info({ idToFind: id }, 'user_not_found_error');
         return c.json(
             {
-                message: HTTP_STATUS_VALUES.NOT_FOUND.message,
-                statusCode: HTTP_STATUS_VALUES.NOT_FOUND.code,
+                status: apiEndpointStatuses.error,
+                error: {
+                    message: HTTP_STATUS_VALUES.NOT_FOUND.message,
+                    statusCode: HTTP_STATUS_VALUES.NOT_FOUND.code,
+                },
             },
             HTTP_STATUS_VALUES.NOT_FOUND.code,
         );
@@ -117,5 +139,11 @@ export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
 
     c.var.logger.debug({ user: dbUser }, 'user_found');
     c.var.logger.info('get_one_user_success');
-    return c.json(dbUser, HTTP_STATUS_VALUES.OK.code);
+    return c.json(
+        {
+            status: apiEndpointStatuses.success,
+            data: dbUser,
+        },
+        HTTP_STATUS_VALUES.OK.code,
+    );
 };

@@ -1,8 +1,9 @@
 import { createRoute } from '@hono/zod-openapi';
 
+import { apiEndpointStatuses } from '~/constants/api';
 import { HTTP_STATUS_VALUES } from '~/constants/http';
 import { createRouter } from '~/lib/create-app';
-import { createMessageObjectSchema, jsonContent } from '~/utils/openapi';
+import { createSuccessMessageObjectSchema, jsonContent } from '~/utils/openapi';
 
 export const indexRouter = createRouter().openapi(
     createRoute({
@@ -11,7 +12,7 @@ export const indexRouter = createRouter().openapi(
         path: '/',
         responses: {
             [HTTP_STATUS_VALUES.OK.code]: jsonContent(
-                createMessageObjectSchema('Twinkle tech test API'),
+                createSuccessMessageObjectSchema('Twinkle tech test API'),
                 'Twinkl tech test API index',
             ),
         },
@@ -19,7 +20,10 @@ export const indexRouter = createRouter().openapi(
     (c) => {
         return c.json(
             {
-                message: 'Twinkle tech test API',
+                status: apiEndpointStatuses.success,
+                data: {
+                    message: 'Twinkle tech test API',
+                },
             },
             HTTP_STATUS_VALUES.OK.code,
         );
