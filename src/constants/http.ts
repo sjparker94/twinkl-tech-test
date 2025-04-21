@@ -24,7 +24,10 @@ export const HTTP_STATUS_VALUES = {
         code: 403,
         message: 'Forbidden',
     },
-
+    CONFLICT: {
+        code: 409,
+        message: 'Conflict',
+    },
     UNPROCESSABLE_ENTITY: {
         code: 422,
         message: 'Unprocessable Entity',
