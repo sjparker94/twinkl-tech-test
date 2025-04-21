@@ -5,6 +5,7 @@ import { requestId } from 'hono/request-id';
 
 import type { AppBindings, AppOpenAPI } from '~/lib/types';
 
+import { apiEndpointStatuses } from '~/constants/api';
 import { HTTP_STATUS_VALUES } from '~/constants/http';
 import { notFound, onError } from '~/middlewares/error';
 import { pinoLogger } from '~/middlewares/logger';
@@ -14,11 +15,17 @@ export function createRouter() {
         strict: false,
         defaultHook: (result, c) => {
             if (!result.success) {
+                c.var.logger.error(
+                    { error: result.error, endpoint: c.req.path },
+                    'api_endpoint_validation_error',
+                );
                 return c.json(
                     {
-                        success: result.success,
-                        error: result.error,
-                        statusCode: HTTP_STATUS_VALUES.BAD_REQUEST.code,
+                        status: apiEndpointStatuses.error,
+                        error: {
+                            validationError: result.error,
+                            statusCode: HTTP_STATUS_VALUES.BAD_REQUEST.code,
+                        },
                     },
                     HTTP_STATUS_VALUES.BAD_REQUEST.code,
                 );
