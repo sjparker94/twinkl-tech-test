@@ -11,7 +11,7 @@
         "start": "dotenvx run -- node dist/src/index.js",
         "dev": "dotenvx run -- tsx watch src/index.ts",
         "typecheck": "tsc --noEmit",
-        "test": "vitest",
+        "test": "dotenvx run -f .env.test -- vitest",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "format:check": "prettier \"**/*\" --check --ignore-unknown",
