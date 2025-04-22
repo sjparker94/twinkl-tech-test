@@ -27,7 +27,7 @@ export const create = createRoute({
                 }),
                 data: selectUserSchema,
             }),
-            'The created task',
+            'The created user',
         ),
         [HTTP_STATUS_VALUES.BAD_REQUEST.code]: jsonContent(
             createErrorSchema(insertUserSchema),

@@ -5,7 +5,7 @@ import type { AppOpenAPI } from './types';
 import packageJSON from '../../package.json' with { type: 'json' };
 
 export function configureOpenAPI(app: AppOpenAPI) {
-    app.doc('/doc', {
+    app.doc('/api/doc', {
         openapi: '3.0.0',
         info: {
             version: packageJSON.version,
@@ -14,7 +14,7 @@ export function configureOpenAPI(app: AppOpenAPI) {
     });
 
     app.get(
-        '/reference',
+        '/api/reference',
         Scalar({
             theme: 'kepler',
             layout: 'modern',

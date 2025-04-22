@@ -24,14 +24,14 @@ import { usersRouter } from './users.index';
 const client = testClient(createTestApp(usersRouter));
 
 describe('usersRouter', () => {
-    beforeAll(async () => {
+    beforeAll(() => {
         // spin up the test database
         // this will create a test.db file in the root of the project if it doesn't exist
         execSync('npx drizzle-kit push');
     });
 
     // remove the database after the run
-    afterAll(async () => {
+    afterAll(() => {
         fs.rmSync('test.db', { force: true });
     });
 
@@ -62,7 +62,7 @@ describe('usersRouter', () => {
     });
 
     // tests if the email is lowercased, password is hashed and the user is created
-    it('endpoint: POST /users creates a task and formats the data in the database', async () => {
+    it('endpoint: POST /users creates a user and formats the data in the database', async () => {
         // create a user with uppercase email and untrimmed strings
         const response = await client.users.$post({
             json: {
