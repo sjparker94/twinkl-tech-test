@@ -135,9 +135,9 @@ Libraries packages used:
 - SQLite/[drizzle](https://orm.drizzle.team/docs/overview) - local file database and ORM. Easily define the database structure and interact with the database in a type safe way.
 - [zod](https://zod.dev/) - validation library used widely in the application.
 - [pino](https://github.com/pinojs/pino?tab=readme-ov-file#documentation) - small logging library.
--
+- [vitest](https://vitest.dev/) - testing library.
 
-Base hono app exported from [app.ts](./src/app.ts). Local development uses [@hono/node-server](https://hono.dev/docs/getting-started/nodejs) defined in [index.ts](./src/index.ts) - update this file or create a new entry point to use your preferred runtime.
+Base hono app exported from [app.ts](./src/app.ts). Local development uses [@hono/node-server](https://hono.dev/docs/getting-started/nodejs) defined in [index.ts](./src/index.ts).
 
 See [src/routes/users](./src/routes/users/) for an example Open API group.
 
