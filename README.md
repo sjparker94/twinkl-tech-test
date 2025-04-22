@@ -1,8 +1,160 @@
+# Contents
+
+<!-- toc -->
+
+- [Twinkl TypeScript Test](#twinkl-typescript-test)
+    - [Getting started / Setup](#getting-started--setup)
+        - [Prerequisites](#prerequisites)
+        - [Environment variables](#environment-variables)
+        - [Installation](#installation)
+        - [Database setup](#database-setup)
+        - [Usage](#usage)
+    - [Project structure](#project-structure)
+    - [Endpoints](#endpoints)
+    - [Task](#task)
+    - [What we are looking for](#what-we-are-looking-for)
+
+<!-- tocstop -->
+
 # Twinkl TypeScript Test
 
-- [Task](#task)
-- [Development Environment Setup](#setup)
-- [What we are looking for](#what-we-are-looking-for)
+## Getting started / Setup
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed on your machine:
+
+- [Node.js](https://nodejs.org/): Ensure that Node.js, is installed on your system. This project is using **Node.js v22**.
+- [npm](https://www.npmjs.com/): npm is the package manager for Node.js and comes with the Node.js installation.
+
+### Environment variables
+
+Create a `.env` file in the root directory.
+
+```
+cp .env.example .env
+
+```
+
+The schema possible values for the environment variables can be found in [env.ts](./src/env.ts)
+
+The environment variables are validated when running the application and an error will be thrown if incorrectly setup.
+
+### Installation
+
+Install the dependencies:
+
+```
+npm i
+```
+
+### Database setup
+
+This project uses `SQLite` as a local database with `drizzle` as the ORM.
+
+To setup the database run:
+
+```
+npx drizzle-kit push
+```
+
+Provided the `DATABASE_URL` environment variable is setup correctly this will create the db file and push the schema.
+
+To view the data in gui browser tool run (port can be specified on the end):
+
+```
+npx drizzle-kit studio --port=3001
+```
+
+### Usage
+
+In development the following command will start the server and use `tsx` to auto-reload the server based on file changes.
+
+```
+npm run dev
+```
+
+The server will start at `http://localhost:3000` by default. You can change the port via `PORT` environment variable.
+
+To run tests run:
+
+```
+npm run test
+```
+
+To build and run without watch mode run:
+
+```
+npm run build
+npm start
+```
+
+Additional scripts:
+
+Lint to show warning/errors:
+
+```
+npm run lint
+
+```
+
+Lint with auto fix:
+
+```
+npm run lint:fix
+
+```
+
+Format to show warning/errors:
+
+```
+npm run format:check
+
+```
+
+Format with auto fix:
+
+```
+npm run format:fix
+
+```
+
+## Project structure
+
+Libraries packages used:
+
+- [Hono](https://hono.dev/) - web framework for building the API endpoints
+
+    - [Zod OpenAPI Example](https://hono.dev/examples/zod-openapi)
+    - [Testing](https://hono.dev/docs/guides/testing)
+    - [Testing Helper](https://hono.dev/docs/helpers/testing)
+
+- [@hono/zod-openapi](https://github.com/honojs/middleware/tree/main/packages/zod-openapi) - documenting the endpoints in the code.
+- [Scalar Documentation](https://github.com/scalar/scalar/tree/main/?tab=readme-ov-file#documentation) - interactive ui for API reference.
+
+- SQLite/[drizzle](https://orm.drizzle.team/docs/overview) - local file database and ORM. Easily define the database structure and interact with the database in a type safe way.
+- [zod](https://zod.dev/) - validation library used widely in the application.
+- [pino](https://github.com/pinojs/pino?tab=readme-ov-file#documentation) - small logging library.
+-
+
+Base hono app exported from [app.ts](./src/app.ts). Local development uses [@hono/node-server](https://hono.dev/docs/getting-started/nodejs) defined in [index.ts](./src/index.ts) - update this file or create a new entry point to use your preferred runtime.
+
+See [src/routes/users](./src/routes/users/) for an example Open API group.
+
+- Router created in [users.index.ts](./src/routes/users/users.index.ts)
+- Route definitions defined in [users.routes.ts](./src/routes/users/users.routes.ts)
+- Hono request handlers defined in [users.handlers.ts](./src/routes/users/users.handlers.ts)
+- Unit tests defined in [users.test.ts](./src/routes/users/users.test.ts)
+
+## Endpoints
+
+| Path               | Description              |
+| ------------------ | ------------------------ |
+| GET /api/doc       | Open API Specification   |
+| GET /api/reference | Scalar API Documentation |
+| GET /api           | Index endpoint           |
+| POST /users        | Create a user            |
+| GET /users/{id}    | Get one user by id       |
 
 ## Task
 
@@ -31,59 +183,3 @@ These are the requirements for the system:
 - Clean, secure, modular code written to your own standards of what good looks like. Add concise comments in the code if you want to explain a decision.
 - Pragmatism. We are not looking for complex solutions, and there is no hidden trick requirement in our task ;)
 - Feel free to install and use additional packages
-
-## Setup
-
-### Prerequisites
-
-Before you begin, ensure you have the following installed on your machine:
-
-- [Node.js](https://nodejs.org/): Ensure that Node.js, preferably version 16 or higher, is installed on your system, as this project utilizes the latest versions of TypeScript and Nodemon.
-- [npm](https://www.npmjs.com/): npm is the package manager for Node.js and comes with the Node.js installation.
-
-### Installation
-
-This will install a basic [Express](https://expressjs.com/) app with Typescript.
-
-If you have been provided with a Github URL, clone the repository to your local machine:
-
-```
-git clone https://github.com/twinkltech/twinkl-typescript-tech-test.git
-```
-
-If you have been provided with a zip file, download to your computer and unzip.
-
-Navigate to the directory:
-
-```
-cd twinkl-typescript-tech-test
-```
-
-Install the dependencies:
-
-```
-npm i
-```
-
-### Usage
-
-In development the following command will start the server and use `nodemon` to auto-reload the server based on file changes
-
-```
-npm run dev
-```
-
-The server will start at `http://localhost:3000` by default. You can change the port in `src/index.ts`
-
-There are no tests in the project at the moment, but a command is available to run:
-
-```
-npm run test
-```
-
-There are also commands to build and start a server without nodemon:
-
-```
-npm run build
-npm start
-```
