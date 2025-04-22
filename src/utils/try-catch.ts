@@ -4,9 +4,9 @@ export type AsyncTuple<
     DataType extends any = unknown,
 > =
     | {
-        error: ErrorType;
-        data: null;
-    }
+          error: ErrorType;
+          data: null;
+      }
     | { error: null; data: DataType };
 
 /**
@@ -23,8 +23,7 @@ export async function tryCatch<
             throw error;
         });
         return { error: null, data };
-    }
-    catch (error) {
+    } catch (error) {
         return { error: error as ErrorType, data: null };
     }
 }
