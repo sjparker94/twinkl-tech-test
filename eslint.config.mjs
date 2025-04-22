@@ -37,6 +37,9 @@ export default antfu(
             ],
             'style/operator-linebreak': 'off',
             'style/arrow-parens': 'off',
+            'style/indent': 'off',
+            'style/indent-binary-ops': 'off',
+            'style/brace-style': 'off',
         },
     },
 );
