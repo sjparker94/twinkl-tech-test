@@ -108,14 +108,12 @@ Format to show warning/errors:
 
 ```
 npm run format:check
-
 ```
 
 Format with auto fix:
 
 ```
 npm run format:fix
-
 ```
 
 ## Project structure
