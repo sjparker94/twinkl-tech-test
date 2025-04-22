@@ -33,7 +33,6 @@ Create a `.env` file in the root directory.
 
 ```
 cp .env.example .env
-
 ```
 
 The schema possible values for the environment variables can be found in [env.ts](./src/env.ts)
